@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../utils/Colors';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { Colors } from '../utils/Colors';
 import { normalizeModerately, normalizeWidth } from '../utils/Scaling';
 import { FONTS } from '../utils/Fonts';
 

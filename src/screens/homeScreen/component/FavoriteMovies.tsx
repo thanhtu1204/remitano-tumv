@@ -1,9 +1,9 @@
 import React from 'react';
-import { FlatList, Text, View, Image, StyleSheet } from 'react-native';
+import { FlatList, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import MovieItemView from 'components/ui/MovieItemView';
-import { Movie } from 'data/movieData';
+
+import MovieItemView from 'screens/homeScreen/component/MovieItemView';
 
 const FavoriteMovies: React.FC = () => {
   const favoriteMovies = useSelector((state: RootState) => state.movies.favorites);

@@ -1,7 +1,7 @@
-const screenKeys = {
+export const SCREEN_KEY = {
   SPLASH_SCREEN: 'SplashScreen',
-  HOME_SCREEN: 'Home',
-  BOOKING_SCREEN: 'Booking',
-};
+  HOME_SCREEN: 'HomeScreen',
+  BOOKING_SCREEN: 'BookingScreen',
+} as const;
 
-export default screenKeys;
+export type ScreenKey = (typeof SCREEN_KEY)[keyof typeof SCREEN_KEY];

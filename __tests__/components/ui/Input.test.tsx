@@ -1,179 +1,90 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react-native';
-import Input from '../../../src/components/ui/Input';
-
+import { render, fireEvent, act, screen } from '@testing-library/react-native';
+import Input from 'components/ui/Input';
 
 describe('Input component', () => {
-    const mockOnChangeText = jest.fn();
-    const mockOnFocus = jest.fn();
-    const mockOnBlur = jest.fn();
+  const mockOnChangeText = jest.fn();
+  const mockOnFocus = jest.fn();
+  const mockOnBlur = jest.fn();
 
-    it('should render correctly', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                testID="inputComponent"
-            />
-        );
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-        expect(getByTestId('inputComponent')).toBeTruthy();
-    });
+  it('should render correctly', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" testID="inputComponent" />);
+    expect(screen.getByTestId('inputComponent')).toBeTruthy();
+  });
 
-    it('should display the placeholder text', () => {
-        const { getByPlaceholderText } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-            />
-        );
+  it('should display the placeholder text', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" />);
+    expect(screen.getByPlaceholderText('Enter text')).toBeTruthy();
+  });
 
-        expect(getByPlaceholderText('Enter text')).toBeTruthy();
-    });
+  it('should call onChangeText when text is entered', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" />);
+    fireEvent.changeText(screen.getByTestId('textInput'), 'New text');
+    expect(mockOnChangeText).toHaveBeenCalledWith('New text');
+  });
 
-    it('should call onChangeText when text is entered', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-            />
-        );
+  it('should display error text if error prop is provided', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" error="This is an error" />);
+    expect(screen.getByTestId('errorText')).toHaveTextContent('This is an error');
+  });
 
-        fireEvent.changeText(getByTestId('textInput'), 'New text');
-        expect(mockOnChangeText).toHaveBeenCalledWith('New text');
-    });
+  it('should call onFocus and set focus state on input focus', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" onFocus={mockOnFocus} />);
+    fireEvent.focus(screen.getByTestId('textInput'));
+    expect(mockOnFocus).toHaveBeenCalled();
+  });
 
-    it('should display error text if error prop is provided', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                error="This is an error"
-            />
-        );
+  it('should call onBlur and remove focus state on input blur', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" onBlur={mockOnBlur} />);
+    fireEvent.blur(screen.getByTestId('textInput'));
+    expect(mockOnBlur).toHaveBeenCalled();
+  });
 
-        expect(getByTestId('errorText')).toHaveTextContent('This is an error');
-    });
+  it('should apply disabled style and prevent text changes when disabled', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" disabled />);
 
-    it('should call onFocus and set focus state on input focus', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                onFocus={mockOnFocus}
-            />
-        );
+    // Check that pointerEvents is set to 'none' for the disabled state
+    const animatedView = screen.getByTestId('animatedView');
+    expect(animatedView).toHaveStyle({ pointerEvents: 'none' });
 
-        // Use `act` to ensure state updates are applied
-        act(() => {
-            fireEvent(getByTestId('textInput'), 'focus', {});
-        });
+    // Ensure the text input is not editable
+    const textInput = screen.getByTestId('textInput');
+    expect(textInput.props.editable).toBe(false);
+  });
 
-        expect(mockOnFocus).toHaveBeenCalled();
-    });
+  it('should handle multiple focus and blur events', () => {
+    render(
+      <Input
+        value=""
+        onChangeText={mockOnChangeText}
+        placeholder="Enter text"
+        onFocus={mockOnFocus}
+        onBlur={mockOnBlur}
+      />,
+    );
 
-    it('should call onBlur and remove focus state on input blur', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                onBlur={mockOnBlur}
-            />
-        );
+    fireEvent.focus(screen.getByTestId('textInput'));
+    fireEvent.blur(screen.getByTestId('textInput'));
+    fireEvent.focus(screen.getByTestId('textInput'));
+    fireEvent.blur(screen.getByTestId('textInput'));
 
-        // Use `act` to ensure state updates are applied
-        act(() => {
-            fireEvent(getByTestId('textInput'), 'blur', {});
-        });
+    expect(mockOnFocus).toHaveBeenCalledTimes(2);
+    expect(mockOnBlur).toHaveBeenCalledTimes(2);
+  });
 
-        expect(mockOnBlur).toHaveBeenCalled();
-    });
+  it('should call default onFocus function when not provided', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" />);
 
-    it('should apply disabled style and prevent text changes when disabled', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                disabled
-            />
-        );
+    fireEvent.focus(screen.getByTestId('textInput'));
+  });
 
-        // Check that pointerEvents is set to 'none' for the disabled state
-        const animatedView = getByTestId('animatedView');
-        expect(animatedView).toHaveStyle({ pointerEvents: 'none' });
+  it('should call default onBlur function when not provided', () => {
+    render(<Input value="" onChangeText={mockOnChangeText} placeholder="Enter text" />);
 
-        // Ensure the text input is not editable
-        const textInput = getByTestId('textInput');
-        expect(textInput.props.editable).toBe(false);
-
-    });
-
-    it('should call onBlur and remove focus state on input blur', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                onBlur={mockOnBlur}
-            />
-        );
-        act(() => {
-            fireEvent(getByTestId('textInput'), 'blur', {});
-        });
-        expect(mockOnBlur).toHaveBeenCalled();
-    });
-
-    it('should handle multiple focus and blur events', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-                onFocus={mockOnFocus}
-                onBlur={mockOnBlur}
-            />
-        );
-        fireEvent(getByTestId('textInput'), 'focus', {});
-        fireEvent(getByTestId('textInput'), 'blur', {});
-        fireEvent(getByTestId('textInput'), 'focus', {});
-        fireEvent(getByTestId('textInput'), 'blur', {});
-        expect(mockOnFocus).toHaveBeenCalledTimes(3);
-        expect(mockOnBlur).toHaveBeenCalledTimes(4);
-    });
-
-
-    it('should call default onFocus function when not provided', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-            />
-        );
-        act(() => {
-            fireEvent(getByTestId('textInput'), 'focus', {});
-        });
-    });
-
-    it('should call default onBlur function when not provided', () => {
-        const { getByTestId } = render(
-            <Input
-                value=""
-                onChangeText={mockOnChangeText}
-                placeholder="Enter text"
-            />
-        );
-        act(() => {
-            fireEvent(getByTestId('textInput'), 'blur', {});
-        });
-
-    });
-
+    fireEvent.blur(screen.getByTestId('textInput'));
+  });
 });

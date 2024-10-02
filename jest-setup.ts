@@ -1,7 +1,8 @@
 import '@testing-library/react-native/extend-expect';
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 // include this line for mocking react-native-gesture-handler
 import 'react-native-gesture-handler/jestSetup';
+
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 // include this section and the NativeAnimatedHelper section for mocking react-native-reanimated
 jest.mock('react-native-reanimated', () => {

@@ -1,0 +1,8 @@
+{
+  "setupFilesAfterEnv": [
+    "./init.js"
+  ],
+  "testEnvironment": "node",
+  "testTimeout": 120000,
+  "verbose": true
+}

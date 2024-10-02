@@ -1,16 +1,16 @@
-// src/screens/HomeScreen.tsx
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import MovieList from 'components/ui/MovieList';
-import FavoriteMovies from 'components/ui/FavoriteMovies';
-import BookedMovies from 'components/ui/BookedMovies';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { store } from 'redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RouteProp, useRoute } from '@react-navigation/native';
+
 import { loadStateFromStorage, setMovies } from 'redux/reducers/movieSlice';
 import { moviesData } from 'data/movieData';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import MovieList from 'screens/homeScreen/component/MovieList';
+import FavoriteMovies from 'screens/homeScreen/component/FavoriteMovies';
+import BookedMovies from 'screens/homeScreen/component/BookedMovies';
 
 const initialLayout = { width: 300 };
 const MOVIES_STORAGE_KEY = 'movies_storage';

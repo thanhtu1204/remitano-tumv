@@ -1,9 +1,7 @@
-// src/components/MovieDetail.tsx
 import React from 'react';
-import { View, Text, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
 import { Movie } from 'data/movieData';
-import { store } from 'redux/store';
-import { bookMovie } from 'redux/reducers/movieSlice';
 import ImageLoader from 'components/global/ImageLoader';
 import CustomSafeAreaScrollView from 'components/global/CustomSafeAreaViewScroll';
 

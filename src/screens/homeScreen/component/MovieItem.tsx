@@ -7,9 +7,9 @@ import { toggleFavorite } from 'redux/reducers/movieSlice';
 import { Movie } from 'data/movieData';
 import ImageLoader from 'components/global/ImageLoader';
 import { navigate } from 'utils/NavigationUtil';
-import {SCREEN_KEY} from "constants/screenKeys";
+import { SCREEN_KEY } from 'constants/screenKeys';
 
-const MovieItem = memo(({ item }: { item: Movie }) => {
+const MovieItem = memo(({ item, index }: { item: Movie; index: number }) => {
   const scaleValue = useRef(new Animated.Value(1)).current;
   const favoriteMovies = useSelector((state: RootState) => state.movies.favorites);
   const bookedMovies = useSelector((state: RootState) => state.movies.booked);
@@ -29,7 +29,7 @@ const MovieItem = memo(({ item }: { item: Movie }) => {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      store.dispatch(toggleFavorite(item.id));
+      store.dispatch(toggleFavorite(item));
     });
   };
 
@@ -49,6 +49,7 @@ const MovieItem = memo(({ item }: { item: Movie }) => {
             <TouchableOpacity
               style={{ ...styles.button, borderColor: isFavorite ? '#f194ff' : 'gray' }}
               onPress={handleLikePress}
+              testID={`favorite-button-${index}`}
             >
               <Animated.Text style={[styles.textFavorite, { color: isFavorite ? '#f194ff' : 'gray' }]}>
                 Yêu thích

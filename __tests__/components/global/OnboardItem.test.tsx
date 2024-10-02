@@ -1,11 +1,11 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react-native';
-import OnboardItem from '../../../src/components/global/OnboardItem';
+import { render, screen, fireEvent } from '@testing-library/react-native';
+import OnboardItem from 'components/global/OnboardItem';
 
 describe('OnboardItem', () => {
   const mockOnPressFirst = jest.fn();
   const mockOnPressSecond = jest.fn();
-  const imageSource = {uri: 'https://example.com/image.jpg'};
+  const imageSource = { uri: 'https://example.com/image.jpg' };
   const title = 'Test Title';
   const subtitle = 'Test Subtitle';
   const buttonTitleFirst = 'First Button';
@@ -16,7 +16,7 @@ describe('OnboardItem', () => {
   });
 
   it('should render correctly with one button', () => {
-    const {getByText, getByTestId} = render(
+    render(
       <OnboardItem
         imageSource={imageSource}
         title={title}
@@ -26,14 +26,14 @@ describe('OnboardItem', () => {
       />,
     );
 
-    expect(getByText(title)).toBeTruthy();
-    expect(getByText(subtitle)).toBeTruthy();
-    expect(getByText(buttonTitleFirst)).toBeTruthy();
-    expect(getByTestId('background-image')).toBeTruthy();
+    expect(screen.getByText(title)).toBeTruthy();
+    expect(screen.getByText(subtitle)).toBeTruthy();
+    expect(screen.getByText(buttonTitleFirst)).toBeTruthy();
+    expect(screen.getByTestId('background-image')).toBeTruthy();
   });
 
   it('should render correctly with two buttons', () => {
-    const {getByText} = render(
+    render(
       <OnboardItem
         imageSource={imageSource}
         title={title}
@@ -45,14 +45,14 @@ describe('OnboardItem', () => {
       />,
     );
 
-    expect(getByText(title)).toBeTruthy();
-    expect(getByText(subtitle)).toBeTruthy();
-    expect(getByText(buttonTitleFirst)).toBeTruthy();
-    expect(getByText(buttonTitleSecond)).toBeTruthy();
+    expect(screen.getByText(title)).toBeTruthy();
+    expect(screen.getByText(subtitle)).toBeTruthy();
+    expect(screen.getByText(buttonTitleFirst)).toBeTruthy();
+    expect(screen.getByText(buttonTitleSecond)).toBeTruthy();
   });
 
   it('should call onPressFirst when the first button is pressed', () => {
-    const {getByText} = render(
+    render(
       <OnboardItem
         imageSource={imageSource}
         title={title}
@@ -62,12 +62,12 @@ describe('OnboardItem', () => {
       />,
     );
 
-    fireEvent.press(getByText(buttonTitleFirst));
+    fireEvent.press(screen.getByText(buttonTitleFirst));
     expect(mockOnPressFirst).toHaveBeenCalled();
   });
 
   it('should call onPressSecond when the second button is pressed', () => {
-    const {getByText} = render(
+    render(
       <OnboardItem
         imageSource={imageSource}
         title={title}
@@ -79,7 +79,7 @@ describe('OnboardItem', () => {
       />,
     );
 
-    fireEvent.press(getByText(buttonTitleSecond));
+    fireEvent.press(screen.getByText(buttonTitleSecond));
     expect(mockOnPressSecond).toHaveBeenCalled();
   });
 });

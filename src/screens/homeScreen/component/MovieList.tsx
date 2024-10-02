@@ -1,20 +1,17 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 
-import { RootState } from 'redux/store';
-import MovieItem from 'components/ui/MovieItem';
 import { Movie } from 'data/movieData';
+import MovieItem from 'screens/homeScreen/component/MovieItem';
+import movies from '../../../assets/data/moviesData.json';
 
 const PAGE_SIZE = 20;
 
 const MovieList: React.FC = () => {
-  const movies = useSelector((state: RootState) => state.movies.movies);
 
   const [displayedMovies, setDisplayedMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState(true);
-  const [firstLoad, setFirstLoad] = useState(true);
   const isLoading = useRef(false);
 
   const loadMoreMovies = useCallback(() => {
@@ -37,21 +34,13 @@ const MovieList: React.FC = () => {
     isLoading.current = false;
   }, [page, hasMore, movies]);
 
-  useEffect(() => {
-    if (movies.length > 0 && firstLoad) {
-      setDisplayedMovies([]);
-      setPage(1);
-      setHasMore(true);
-      setFirstLoad(false);
-      loadMoreMovies();
-    }
-  }, [movies, firstLoad, loadMoreMovies]);
 
   return (
     <FlatList
+      testID="movie-list"
       data={displayedMovies}
-      renderItem={({ item }) => <MovieItem item={item} />}
-      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item, index }) => <MovieItem item={item} index={index} />}
+      keyExtractor={(item, index) => `${item.id.toString()}${index.toString()}`}
       contentContainerStyle={styles.container}
       removeClippedSubviews
       initialNumToRender={10}

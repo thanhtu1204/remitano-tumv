@@ -1,4 +1,4 @@
-import { FONTS } from "../../src/utils/Fonts";
+import { FONTS } from '../../src/utils/Fonts';
 
 describe('FONTS enum', () => {
   it('should have correct values', () => {

@@ -1,79 +1,45 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# README: Ứng dụng Đặt Vé Xem Phim
 
-# Getting Started
+## 1. Mô tả
+Ứng dụng React Native đặt vé xem phim với giao diện tự thiết kế, sử dụng dữ liệu cục bộ (local data). Dữ liệu phim được tạo ngẫu nhiên và được sử dụng trong toàn bộ ứng dụng. Ứng dụng có 2 trang chính: **Trang Home** và **Trang Đặt Vé**.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+### Trang Home:
+- **Tab 1 (Danh sách phim)**: Hiển thị danh sách phim với hơn 1000 phim ngẫu nhiên, bao gồm:
+    - Tên phim (`title`), mô tả (`description`), ảnh bìa (`thumbnail`), nút **Đặt Vé**, và nút **Yêu Thích**.
+    - Nếu phim đã được đặt, nút Đặt Vé sẽ đổi thành **Đã Xem** và bị vô hiệu hóa.
+- **Tab 2 (Danh sách phim yêu thích)**: Hiển thị các phim đã được đánh dấu là **Yêu Thích** từ Tab 1.
+- **Tab 3 (Danh sách phim đã đặt)**: Hiển thị các phim đã được đặt vé từ Tab 1.
 
-## Step 1: Start the Metro Server
+### Trang Đặt Vé:
+- Hiển thị thông tin chi tiết về phim được chọn từ Tab 1:
+    - Ảnh bìa (`thumbnail`), tiêu đề (`title`), mô tả (`description`) và nút **Đặt Vé**.
+    - Khi nhấn vào nút **Đặt Vé**, chuyển về **Tab 3** để hiển thị danh sách các phim đã đặt.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 2. Cấu trúc ứng dụng
 
-To start Metro, run the following command from the _root_ of your React Native project:
+### Trang Home
+- **Tab 1**: Danh sách phim được tạo ngẫu nhiên với hơn 1000 phim, có thể thêm, xóa, hoặc cập nhật trạng thái `favorite` và `isBooked`.
+    - Khi nhấn nút **Đặt Vé**: Phim sẽ được đánh dấu là **Đã Xem** và chuyển sang Tab 3.
+    - Khi nhấn nút **Yêu Thích**: Phim sẽ được thêm vào danh sách yêu thích và hiển thị ở Tab 2.
 
-```bash
-# using npm
-npm start
+### Trang Đặt Vé
+- Hiển thị thông tin chi tiết của phim đã chọn.
+- Nhấn **Đặt Vé** sẽ thêm phim vào danh sách đã đặt và điều hướng trở về **Tab 3**.
 
-# OR using Yarn
-yarn start
-```
+## 3. Dữ liệu phim cục bộ (local data)
+- Dữ liệu phim được tạo ngẫu nhiên bằng cách sử dụng script Python với hơn 1200 phim.
+- Các trường dữ liệu trong phim:
+    - `id`: Mã định danh phim.
+    - `title`: Tên phim ngẫu nhiên.
+    - `description`: Mô tả ngẫu nhiên.
+    - `thumbnail`: URL ảnh đại diện của phim.
+    - `favorite`: Trạng thái yêu thích (`true` hoặc `false`).
+    - `isBooked`: Trạng thái đặt vé (`true` hoặc `false`).
 
-## Step 2: Start your Application
+## 4. Test case tự động với Detox
+- **Test case 1**: Kiểm tra việc chuyển giữa các tab.
+- **Test case 2**: Thêm phim vào mục yêu thích và kiểm tra xuất hiện trong Tab 2.
+- **Test case 3**: Đặt vé cho phim và kiểm tra phim có trong Tab 3.
+- **Test case 4**: Kiểm tra trạng thái "Đã Xem" khi đặt vé.
+- **Test case 5**: Đảm bảo không thể đặt lại vé cho phim đã đặt.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

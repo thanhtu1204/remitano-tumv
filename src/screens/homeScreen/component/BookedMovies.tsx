@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { Text, FlatList, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import MovieItemView from 'components/ui/MovieItemView';
+
+import MovieItemView from 'screens/homeScreen/component/MovieItemView';
 
 const BookedMovies: React.FC = () => {
   const bookedMovies = useSelector((state: RootState) => state.movies.booked);
